@@ -1,0 +1,22 @@
+# Vector Consulting Limited
+
+> Hong Kong technology consultancy delivering senior engineering teams, applied AI and federated data spaces to companies in Europe and Asia.
+
+- Registered in Hong Kong, Business Registration No. 72876645. Address: Rooms 1705-1709, 17/F, Tung Chiu Commercial Centre, 193 Lockhart Road, Wanchai, Hong Kong.
+- Contact: alison.lindsay@vectorconsultingltd.com
+- Services: software engineering, dedicated engineering teams, AI and data (sovereign AI, data platforms, federated data spaces on Gaia-X / IDSA / Pontus-X with ODRL usage policies), technology consulting including EU-funded R&D.
+- Industries: healthcare and life sciences, procurement and public sector, technology companies, industrial data spaces.
+- Engagement models: project delivery, dedicated team, specialists, advisory.
+- Selected work: Global Data Care federated health data space (technology development for Accuro Technology, Spain); PROCUREDATA procurement data space (advisory for Agile Procurement via Accuro Technology); senior specialists for Spanish technology companies, including through Technova Corp Ltd (London).
+
+## Pages
+- [Services](https://www.vectorconsultingltd.com/services/)
+- [AI & Data](https://www.vectorconsultingltd.com/services/ai-data/)
+- [How we work](https://www.vectorconsultingltd.com/services/how-we-work/)
+- [Industries](https://www.vectorconsultingltd.com/industries/)
+- [Case studies](https://www.vectorconsultingltd.com/case-studies/)
+- [Insights](https://www.vectorconsultingltd.com/insights/)
+- [About](https://www.vectorconsultingltd.com/about/)
+- [Careers](https://www.vectorconsultingltd.com/about/careers/)
+- [Contact](https://www.vectorconsultingltd.com/contact/)
+- [Español](https://www.vectorconsultingltd.com/es/)
