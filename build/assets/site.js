@@ -18,7 +18,7 @@
       var body = f.get("message") + "\n\n" + f.get("name") + (f.get("company") ? " · " + f.get("company") : "") + "\n" + f.get("email");
       window.location.href = "mailto:" + form.dataset.to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     };
-    btn.disabled = true; st.className = "form-status"; st.textContent = "…";
+    btn.disabled = true; st.className = "form-status"; st.textContent = form.dataset.sending;
     fetch("https://formsubmit.co/ajax/" + form.dataset.to, {
       method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
       body: JSON.stringify({name: f.get("name"), company: f.get("company") || "-", email: f.get("email"), message: f.get("message"),

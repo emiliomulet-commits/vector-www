@@ -336,7 +336,7 @@ def contact(lang):
     f=T["f"]
     steps="".join(f"<li><span class='sn'>{i+1:02d}</span><p>{E(s)}</p></li>" for i,s in enumerate(T["steps"]))
     body=page_hero(T["k"],T["h"],T["l"],small=True)+f'''<section class="sec"><div class="wrap contact-grid">
- <form class="form" id="contact-form" data-to="{EMAIL}" data-ok="{E(T["ok"])}" data-err="{E(T["err"])}" data-lang="{lang}" novalidate>
+ <form class="form" id="contact-form" data-to="{EMAIL}" data-ok="{E(T["ok"])}" data-err="{E(T["err"])}" data-lang="{lang}" data-sending="{"Sending your message… this can take up to a minute." if lang=="en" else "Enviando tu mensaje… puede tardar hasta un minuto."}" novalidate>
   <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="row"><label for="cf-name">{f[0]}</label><input id="cf-name" name="name" required autocomplete="name"></div>
   <div class="row"><label for="cf-company">{f[1]}</label><input id="cf-company" name="company" autocomplete="organization"></div>
