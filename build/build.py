@@ -23,7 +23,19 @@ ICON = {
 }
 def icon(n, cls="ic"): return f'<svg class="{cls}" viewBox="0 0 24 24" aria-hidden="true">{ICON[n]}</svg>'
 
-LOGO = '<svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M8 9l8 15 8-15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 9h5v5" fill="none" stroke="#3ee6c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+def LOGO_SVG(u):
+    """Vector mark: two overlapping capsules forming a V, with an animated light sweep (CSS in site.css)."""
+    L = '<rect x="17" y="2.75" width="16" height="56.5" rx="8" transform="rotate(-20.2 25 31)"/>'
+    R = '<rect x="31" y="2.75" width="16" height="56.5" rx="8" transform="rotate(20.2 39 31)"/>'
+    return (f'<svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><defs>'
+            f'<clipPath id="vl-{u}">{L}</clipPath><clipPath id="va-{u}">{L}{R}</clipPath>'
+            f'<linearGradient id="vs-{u}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>'
+            f'{L.replace("/>"," fill=\"#4a72ff\"/>")}{R.replace("/>"," fill=\"#2f5bff\"/>")}'
+            f'<g clip-path="url(#vl-{u})">{R.replace("/>"," fill=\"#1b39b8\"/>")}</g>'
+            f'<g clip-path="url(#va-{u})"><rect class="logo-sweep" x="-6" y="-4" width="14" height="72" fill="url(#vs-{u})"/></g>'
+            f'<path class="logo-spark" d="M51 0 L52.5 4.5 L57 6 L52.5 7.5 L51 12 L49.5 7.5 L45 6 L49.5 4.5 Z" fill="#fff"/></svg>')
+BRAND_TXT = '<span class="brand-txt"><span class="w1">VECTOR</span><span class="w2">CONSULTING</span></span>'
+
 
 def url(key, lang): return PATHS[key][0 if lang=="en" else 1]
 
@@ -58,7 +70,7 @@ def head(lang, key, title, desc, extra_ld=None):
 <meta name="theme-color" content="#0b1526">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">{json.dumps(lds if len(lds)>1 else ld, ensure_ascii=False)}</script>
 </head>
@@ -74,7 +86,7 @@ def header(lang, key):
     if key not in PATHS: key = "home"
     return f'''<header class="top">
  <div class="wrap bar">
-  <a class="brand" href="{url("home",lang)}" aria-label="Vector Consulting">{LOGO}<span>Vector<b>Consulting</b></span></a>
+  <a class="brand" href="{url("home",lang)}" aria-label="Vector Consulting">{LOGO_SVG("h")}{BRAND_TXT}</a>
   <button class="menu" aria-expanded="false" aria-controls="nav" type="button"><span></span><span></span><span class="sr">Menu</span></button>
   <nav id="nav" aria-label="Main">{nav}
    <a class="lang" href="{url(key,other)}" hreflang="{other}" lang="{other}">{u["lang"]}</a>
@@ -102,7 +114,7 @@ def footer(lang):
     return f'''</main>
 <footer class="foot"><div class="wrap">
  <div class="foot-grid">
-  <div class="foot-brand"><a class="brand brand-light" href="{url("home",lang)}">{LOGO}<span>Vector<b>Consulting</b></span></a><p>{u["footer_tag"]}</p></div>
+  <div class="foot-brand"><a class="brand brand-light" href="{url("home",lang)}" aria-label="Vector Consulting">{LOGO_SVG("f")}{BRAND_TXT}</a><p>{u["footer_tag"]}</p></div>
   <div><h3>{u["f_services"]}</h3><a href="{url("services",lang)}">{t[0]}</a><a href="{url("ai",lang)}">{t[1]}</a><a href="{url("how",lang)}">{t[2]}</a><a href="{url("industries",lang)}">{t[3]}</a></div>
   <div><h3>{u["f_company"]}</h3><a href="{url("cases",lang)}">{t[4]}</a><a href="{url("insights",lang)}">{t[5]}</a><a href="{url("about",lang)}">{t[6]}</a><a href="{url("careers",lang)}">{t[7]}</a></div>
   <div><h3>{u["f_contact"]}</h3><a href="mailto:{EMAIL}">{EMAIL}</a><p class="addr">{icon("pin")}<span>Vector Consulting Limited<br>{E(ADDRESS)}</span></p></div>

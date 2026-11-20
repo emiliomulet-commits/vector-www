@@ -37,9 +37,16 @@ em{font-style:normal;color:var(--signal)}
 /* header */
 .top{position:sticky;top:0;z-index:50;background:rgba(11,21,38,.92);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
 .bar{display:flex;align-items:center;gap:24px;height:72px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-family:var(--display);font-size:20px;font-weight:500;white-space:nowrap}
-.brand b{font-weight:700;margin-left:4px}
-.logo-mark{width:32px;height:32px;color:var(--vector)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;white-space:nowrap}
+.logo-mark{width:40px;height:40px;flex:none;overflow:visible}
+.brand-txt{display:flex;flex-direction:column;line-height:1}
+.brand-txt .w1{font:600 17px/1 Poppins,var(--display);letter-spacing:.32em;margin-right:-.32em}
+.brand-txt .w2{font:500 9px/1 Poppins,var(--body);letter-spacing:.52em;margin-top:6px;opacity:.62}
+/* logo light: sweep across the capsules + sparkle at the tip */
+.logo-sweep{animation:logo-sweep 5s cubic-bezier(.6,0,.2,1) infinite}
+@keyframes logo-sweep{0%,50%{transform:translateX(-40px) skewX(-22deg)}85%,100%{transform:translateX(80px) skewX(-22deg)}}
+.logo-spark{opacity:0;transform-box:fill-box;transform-origin:center;animation:logo-spark 5s ease-in-out infinite}
+@keyframes logo-spark{0%,76%{opacity:0;transform:scale(.2) rotate(0)}86%{opacity:1;transform:scale(1.1) rotate(45deg)}97%,100%{opacity:0;transform:scale(.2) rotate(90deg)}}
 .top nav{display:flex;align-items:center;gap:22px;margin-left:auto}
 .top nav a{color:#c7d3e8;text-decoration:none;font-size:15px;font-weight:500;padding:6px 0;border-bottom:2px solid transparent}
 .top nav a:hover,.top nav a[aria-current]{color:#fff;border-color:var(--signal)}
