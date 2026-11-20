@@ -138,6 +138,38 @@ def svc_cards(lang, detail=False):
         out.append(f'<article class="card svc">{icon(ic)}<h3>{E(t)}</h3><p>{E(d)}</p>{"<ul class=checks>"+b+"</ul>" if detail else ""}</article>')
     return '<div class="grid g4">' + "".join(out) + "</div>"
 
+
+# ---------------- animated explainer videos ----------------
+import videos as VIDS
+VT = {"en": dict(sec=("See it in under a minute", "Four short animated explainers on who we are and what we have built."), watch="Watch the video", play="Play video", tx="Transcript", sec_k="Videos",
+                 cases={1: "v02", 2: "v03", 3: "v04"}, case_btn="Watch the {d}-second video"),
+      "es": dict(sec=("Míralo en menos de un minuto", "Cuatro vídeos animados breves sobre quiénes somos y lo que hemos construido."), watch="Ver el vídeo", play="Reproducir vídeo", tx="Transcripción", sec_k="Vídeos",
+                 cases={1: "v02", 2: "v03", 3: "v04"}, case_btn="Ver el vídeo de {d} segundos")}
+
+def vid_url(vid, lang): return f"/videos/{vid}/" + ("es/" if lang == "es" else "") + "?voz=1"
+def vid_secs(vid, lang):
+    tm = VIDS.timing().get(f"{vid}-{lang}")
+    t = tm["total"] if tm else VIDS.estimate(VIDS.VIDEOS[vid][lang]["scenes"])[1]
+    return int(round(t / 5.0) * 5)
+def vid_transcript(vid, lang):
+    return " ".join(s["vo"] for s in VIDS.VIDEOS[vid][lang]["scenes"])
+
+def video_gallery(lang):
+    out = []
+    for vid in VIDS.ORDER:
+        v = VIDS.VIDEOS[vid][lang]
+        out.append(f'''<button class="card vcard" type="button" data-video="{vid_url(vid, lang)}" aria-label="{VT[lang]["play"]}: {E(v["title"])}">
+ <span class="vthumb"><img src="/videos/{vid}/poster-{lang}.webp" alt="" loading="lazy" width="640" height="360"><span class="vplay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="vdur">{vid_secs(vid, lang)} s</span></span>
+ <h3>{E(v["title"])}</h3><p>{E(v["desc"])}</p></button>''')
+    return '<div class="grid g4 vgrid">' + "".join(out) + '</div>'
+
+def case_video(i, lang):
+    vid = VT[lang]["cases"].get(i)
+    if not vid: return ""
+    return (f'<div class="case-video"><button class="btn btn-sm" type="button" data-video="{vid_url(vid, lang)}">'
+            f'<svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></svg> {VT[lang]["case_btn"].format(d=vid_secs(vid, lang))}</button>'
+            f'<details class="tx"><summary>{VT[lang]["tx"]}</summary><p>{E(vid_transcript(vid, lang))}</p></details></div>')
+
 def case_cards(lang, full=False):
     L = {"en":("Client","Sector","Challenge","What we did","Outcome"),"es":("Cliente","Sector","Reto","Qué hicimos","Resultado")}[lang]
     out=[]
@@ -147,7 +179,7 @@ def case_cards(lang, full=False):
             out.append(f'''<article class="case-full" id="case-{i+1}">
  <div class="case-meta"><p class="num">0{i+1}</p><dl><dt>{L[0]}</dt><dd>{E(c["client"])}</dd><dt>{L[1]}</dt><dd>{E(c["sector"])}</dd></dl><div class="tags">{tags}</div></div>
  <div class="case-body"><h2>{E(c["title"])}</h2>
-  <h3>{L[2]}</h3><p>{E(c["challenge"])}</p><h3>{L[3]}</h3><p>{E(c["work"])}</p><h3>{L[4]}</h3><p>{E(c["result"])}</p></div>
+  {case_video(i+1, lang)}<h3>{L[2]}</h3><p>{E(c["challenge"])}</p><h3>{L[3]}</h3><p>{E(c["work"])}</p><h3>{L[4]}</h3><p>{E(c["result"])}</p></div>
 </article>''')
         else:
             out.append(f'<a class="card case" href="{url("cases",lang)}#case-{i+1}"><p class="eyebrow">{E(c["sector"])} · {E(c["client"])}</p><h3>{E(c["title"])}</h3><p>{E(c["result"])}</p><div class="tags">{tags}</div><span class="more">{UI[lang]["read"]} {icon("arrow")}</span></a>')
@@ -214,6 +246,7 @@ def home(lang):
 </div></section>
 <section class="trust"><div class="wrap"><p>{E(T["trust"])}</p><div class="logos">{logos}</div></div></section>
 '''
+    body += sec(VT[lang]["sec"][0], VT[lang]["sec"][1], video_gallery(lang), kicker=VT[lang]["sec_k"], cls="tint vsec")
     body += sec(T["s1"][0], T["s1"][1], svc_cards(lang))
     body += f'<section class="sec dark"><div class="wrap split"><div class="sh"><h2>{T["s2"][0]}</h2></div><div class="whys">{why}</div></div></section>\n'
     body += sec(T["s3"][0], T["s3"][1], case_cards(lang))
@@ -350,6 +383,17 @@ def main():
             shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
     os.makedirs(OUT, exist_ok=True)
     shutil.copytree(os.path.join(os.path.dirname(os.path.abspath(__file__)),"assets"), os.path.join(OUT,"assets"))
+    # animated explainer videos (pages + voice-over audio)
+    import videos as VID
+    vsrc = os.path.join(os.path.dirname(os.path.abspath(__file__)), "videos")
+    for vid in VID.ORDER:
+        write(f"/videos/{vid}/", VID.page(vid, "en"))
+        write(f"/videos/{vid}/es/", VID.page(vid, "es"))
+        for lang in ("en", "es"):
+            a = os.path.join(vsrc, vid, f"voz-{lang}.mp3")
+            if os.path.exists(a): shutil.copy(a, os.path.join(OUT, "videos", vid, f"voz-{lang}.mp3"))
+            pst = os.path.join(vsrc, vid, f"poster-{lang}.webp")
+            if os.path.exists(pst): shutil.copy(pst, os.path.join(OUT, "videos", vid, f"poster-{lang}.webp"))
     urls=[]
     for lang in ("en","es"):
         for key,fn in PAGES.items():

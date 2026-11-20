@@ -16,6 +16,30 @@
     window.location.href = "mailto:" + form.dataset.to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   });
 
+  // Animated explainer videos in a lightbox (iframe); closes on Esc, backdrop or the player's close button.
+  var box = null, last = null;
+  function closeVideo() {
+    if (!box || box.hidden) return;
+    box.querySelector("iframe").src = "about:blank"; box.hidden = true;
+    document.documentElement.style.overflow = ""; if (last) last.focus();
+  }
+  document.querySelectorAll("[data-video]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (!box) {
+        box = document.createElement("div"); box.className = "vbox"; box.hidden = true;
+        box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+        box.innerHTML = '<div class="vbox-in"><iframe allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe></div>';
+        box.addEventListener("click", function (e) { if (e.target === box) closeVideo(); });
+        document.body.appendChild(box);
+      }
+      last = b; box.hidden = false; document.documentElement.style.overflow = "hidden";
+      var f = box.querySelector("iframe"); f.title = b.getAttribute("aria-label") || b.textContent.trim();
+      f.src = b.getAttribute("data-video"); f.focus();
+    });
+  });
+  window.addEventListener("message", function (e) { if (e.data && e.data.vector === "cerrar") closeVideo(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeVideo(); });
+
   // Vector field: short strokes aligned to a slowly drifting flow field.
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.querySelectorAll("canvas.field").forEach(function (cv) {

@@ -1,0 +1,25 @@
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0b1526;color:#fff;font-family:"IBM Plex Sans",system-ui,sans-serif;overflow:hidden}
+#wrap{position:fixed;inset:0 0 0 0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#stage{width:100%;height:100%;display:block}
+#cap{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);max-width:min(1100px,92vw);text-align:center;font-size:clamp(14px,1.9vw,21px);line-height:1.35;color:#fff;background:rgba(5,12,24,.78);padding:8px 18px;border-radius:12px;pointer-events:none}
+#cap:empty{display:none}
+.ui{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(0deg,rgba(5,12,24,.95),rgba(5,12,24,0))}
+.ui button{font:inherit;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:9px;height:38px;min-width:38px;padding:0 10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ui button:hover,.ui button:focus-visible{border-color:#3ee6c8;outline:none}
+.ui svg{width:18px;height:18px}
+#close{border-color:#3ee6c8;color:#3ee6c8}
+.scenes{display:flex;gap:6px;flex:1;min-width:0;overflow:hidden}
+.scenes button{flex:1;min-width:0;height:auto;padding:6px 8px;display:block;text-align:left;font-size:12.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
+.scenes button b{display:block;font-size:11px;color:#3ee6c8}
+.scenes button i{position:absolute;left:0;bottom:0;height:3px;background:#3ee6c8;width:0;border-radius:2px}
+.scenes button.on{border-color:#3ee6c8;background:rgba(62,230,200,.14)}
+#start{position:fixed;inset:0;display:none;align-items:center;justify-content:center;pointer-events:none}
+body.at-start #start{display:flex}
+#start span{pointer-events:auto;cursor:pointer;background:#2f5bff;border-radius:999px;padding:14px 28px;font-size:18px;font-weight:600;box-shadow:0 12px 30px rgba(47,91,255,.45)}
+#voz-btn{position:fixed;top:14px;right:16px;z-index:5;font:600 14px "IBM Plex Sans",system-ui,sans-serif;color:#fff;background:rgba(11,21,38,.82);border:1px solid #3ee6c8;border-radius:999px;padding:9px 16px;cursor:pointer}
+#voz-btn:hover,#voz-btn:focus-visible{background:#3ee6c8;color:#0b1526;outline:none}
+.rm-note{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:rgba(5,12,24,.85);border-radius:999px;padding:8px 16px;font-size:13px;display:none}
+body.reduced .rm-note{display:block}
+@media(max-width:760px){.scenes button span{display:none}#cap{bottom:66px}.ui{gap:6px;padding:8px}#voz-btn{top:8px;right:8px;padding:7px 12px;font-size:13px}}
+@media(max-width:480px){.scenes{display:none}}

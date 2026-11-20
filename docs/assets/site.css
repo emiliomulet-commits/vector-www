@@ -208,3 +208,22 @@ a.card:hover{border-color:var(--vector);transform:translateY(-2px);box-shadow:0 
   .hero-in{padding-top:64px}
   .wrap{padding:0 18px}
 }
+
+/* animated explainer videos */
+.vgrid .vcard{padding:0;overflow:hidden;cursor:pointer;text-align:left;font:inherit;gap:0}
+.vcard h3{padding:18px 20px 0}.vcard p{padding:6px 20px 20px;font-size:15px}
+.vthumb{position:relative;display:block;aspect-ratio:16/9;background:var(--ink);overflow:hidden}
+.vthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.vcard:hover .vthumb img{transform:scale(1.04)}
+.vplay{position:absolute;inset:0;margin:auto;width:58px;height:58px;border-radius:50%;background:var(--vector);display:grid;place-items:center;box-shadow:0 10px 26px rgba(47,91,255,.5);transition:transform .2s}
+.vplay svg{width:24px;height:24px;fill:#fff;margin-left:3px}
+.vcard:hover .vplay{transform:scale(1.1)}
+.vdur{position:absolute;right:10px;bottom:10px;background:rgba(11,21,38,.85);color:#fff;font:600 12px var(--body);padding:3px 8px;border-radius:6px}
+.case-video{margin:6px 0 22px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.case-video .btn .ic{width:16px;height:16px}
+.tx summary{cursor:pointer;color:var(--muted);font-size:14px}.tx p{margin-top:8px;font-size:15px;color:var(--muted);max-width:70ch}
+.vbox{position:fixed;inset:0;z-index:200;background:rgba(5,10,20,.86);display:flex;align-items:center;justify-content:center;padding:3vw}
+.vbox[hidden]{display:none}
+.vbox-in{position:relative;width:min(1280px,100%);aspect-ratio:16/9;max-height:92vh;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);background:#0b1526}
+.vbox iframe{width:100%;height:100%;border:0;display:block}
+@media (max-width:760px){.vbox{padding:0}.vbox-in{border-radius:0;max-height:100vh}}
