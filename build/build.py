@@ -69,8 +69,8 @@ def head(lang, key, title, desc, extra_ld=None):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0b1526">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css">
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">{json.dumps(lds if len(lds)>1 else ld, ensure_ascii=False)}</script>
 </head>
@@ -111,6 +111,7 @@ def footer(lang):
     t = {"en":("Services","AI & Data","How we work","Industries","Case studies","Insights","About","Careers","Contact"),
          "es":("Servicios","IA y Datos","Cómo trabajamos","Sectores","Casos de éxito","Perspectivas","Quiénes somos","Empleo","Contacto")}[lang]
     year = datetime.date.today().year
+    lg = {"en":("Legal notice","Privacy","Cookies"),"es":("Aviso legal","Privacidad","Cookies")}[lang]
     return f'''</main>
 <footer class="foot"><div class="wrap">
  <div class="foot-grid">
@@ -119,7 +120,7 @@ def footer(lang):
   <div><h3>{u["f_company"]}</h3><a href="{url("cases",lang)}">{t[4]}</a><a href="{url("insights",lang)}">{t[5]}</a><a href="{url("about",lang)}">{t[6]}</a><a href="{url("careers",lang)}">{t[7]}</a></div>
   <div><h3>{u["f_contact"]}</h3><a href="mailto:{EMAIL}">{EMAIL}</a><p class="addr">{icon("pin")}<span>Vector Consulting Limited<br>{E(ADDRESS)}</span></p></div>
  </div>
- <div class="legal"><span>© {year} Vector Consulting Limited · {u["brn"]} {BRN} · {u["rights"]}</span><span>Hong Kong · Madrid · London</span></div>
+ <div class="legal"><span>© {year} Vector Consulting Limited · {u["brn"]} {BRN} · {u["rights"]}</span><span class="legal-links"><a href="{url("legal",lang)}">{lg[0]}</a> · <a href="{url("privacy",lang)}">{lg[1]}</a> · <a href="{url("cookies",lang)}">{lg[2]}</a></span></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
 </body></html>
@@ -161,7 +162,8 @@ def video_gallery(lang):
         out.append(f'''<button class="card vcard" type="button" data-video="{vid_url(vid, lang)}" aria-label="{VT[lang]["play"]}: {E(v["title"])}">
  <span class="vthumb"><img src="/videos/{vid}/poster-{lang}.webp" alt="" loading="lazy" width="640" height="360"><span class="vplay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="vdur">{vid_secs(vid, lang)} s</span></span>
  <h3>{E(v["title"])}</h3><p>{E(v["desc"])}</p></button>''')
-    return '<div class="grid g4 vgrid">' + "".join(out) + '</div>'
+    note = {"en":"Voice-over generated with AI (ElevenLabs). Captions and transcripts available.","es":"Locución generada con IA (ElevenLabs). Con subtítulos y transcripción."}[lang]
+    return '<div class="grid g4 vgrid">' + "".join(out) + f'</div><p class="vnote">{note}</p>'
 
 def case_video(i, lang):
     vid = VT[lang]["cases"].get(i)
@@ -211,7 +213,7 @@ def sec(title, intro, body, kicker="", cls=""):
 # ---------------- pages ----------------
 def home(lang):
     T = {"en":dict(
-      title="Vector Consulting · Software engineering, AI and data for companies that build to scale",
+      title="Vector Consulting · Software, AI and data engineering",
       desc="Hong Kong technology consultancy delivering senior engineering teams, applied AI and federated data spaces to companies across Europe and Asia.",
       kicker="Technology consultancy · Hong Kong · Europe",
       h1="Software engineering, AI and data for companies that <em>build to scale</em>",
@@ -224,7 +226,7 @@ def home(lang):
       s6=("Insights","Short perspectives on the questions our clients ask most."),
       trust="Standards and frameworks we build with"),
      "es":dict(
-      title="Vector Consulting · Ingeniería de software, IA y datos para empresas que construyen para crecer",
+      title="Vector Consulting · Ingeniería de software, IA y datos",
       desc="Consultora tecnológica de Hong Kong que aporta equipos de ingeniería senior, IA aplicada y espacios de datos federados a empresas de Europa y Asia.",
       kicker="Consultora tecnológica · Hong Kong · Europa",
       h1="Ingeniería de software, IA y datos para empresas que <em>construyen para crecer</em>",
@@ -287,7 +289,7 @@ def industries(lang):
 
 def cases(lang):
     T={"en":("Case studies · Vector Consulting","Selected engagements: Global Data Care federated health data space, PROCUREDATA procurement data space and senior specialists for Spanish technology companies.","Case studies","Selected <em>engagements</em>","Technology work for companies in Spain and across Europe."),
-       "es":("Casos de éxito · Vector Consulting","Proyectos destacados: espacio de datos de salud Global Data Care, espacio de datos de compras PROCUREDATA y especialistas senior para empresas tecnológicas españolas.","Casos de éxito","Proyectos <em>destacados</em>","Trabajo tecnológico para empresas de España y del resto de Europa.")}[lang]
+       "es":("Casos de éxito · Vector Consulting","Proyectos destacados: espacio de datos de salud Global Data Care, espacio de datos de compras PROCUREDATA y especialistas senior para empresas españolas.","Casos de éxito","Proyectos <em>destacados</em>","Trabajo tecnológico para empresas de España y del resto de Europa.")}[lang]
     body=page_hero(T[2],T[3],T[4])+f'<section class="sec"><div class="wrap cases">{case_cards(lang,True)}</div></section>'
     return T[0],T[1],body
 
@@ -326,21 +328,23 @@ def careers(lang):
 
 def contact(lang):
     T={"en":dict(t="Contact · Vector Consulting",d="Tell us about your project. Vector Consulting will come back to you with a clear next step.",k="Contact",h="Tell us about <em>your project</em>",l="We will come back to you with a clear next step.",
-        f=("Your name","Company","Email","What would you like to discuss?","Prepare email"),note="This opens your email app with your message ready to send. Prefer to write directly? Use the address on the right.",
+        f=("Your name","Company","Email","What would you like to discuss?","Send message"),note="We use your data only to answer your enquiry. See our <a href=\"/privacy/\">privacy policy</a>.",ok="Thank you. Your message has been sent; we will reply shortly.",err="We could not send the form. Please write to us directly at",
         nx="What happens next",steps=["We read your message and reply with questions or a proposed call.","A short call with a senior consultant to understand your goals.","A written proposal: scope, team, timeline and cost."],o="Office"),
        "es":dict(t="Contacto · Vector Consulting",d="Cuéntanos tu proyecto. Vector Consulting te responderá con un siguiente paso claro.",k="Contacto",h="Cuéntanos <em>tu proyecto</em>",l="Te responderemos con un siguiente paso claro.",
-        f=("Tu nombre","Empresa","Email","¿De qué te gustaría hablar?","Preparar email"),note="Se abrirá tu programa de correo con el mensaje listo para enviar. ¿Prefieres escribir directamente? Usa la dirección de la derecha.",
+        f=("Tu nombre","Empresa","Email","¿De qué te gustaría hablar?","Enviar mensaje"),note="Usamos tus datos solo para responder a tu consulta. Consulta nuestra <a href=\"/es/privacidad/\">política de privacidad</a>.",ok="Gracias. Tu mensaje se ha enviado; te responderemos en breve.",err="No hemos podido enviar el formulario. Escríbenos directamente a",
         nx="Qué pasa después",steps=["Leemos tu mensaje y te respondemos con preguntas o una propuesta de llamada.","Una llamada breve con un consultor senior para entender tus objetivos.","Una propuesta por escrito: alcance, equipo, plazos y coste."],o="Oficina")}[lang]
     f=T["f"]
     steps="".join(f"<li><span class='sn'>{i+1:02d}</span><p>{E(s)}</p></li>" for i,s in enumerate(T["steps"]))
     body=page_hero(T["k"],T["h"],T["l"],small=True)+f'''<section class="sec"><div class="wrap contact-grid">
- <form class="form" id="contact-form" data-to="{EMAIL}">
+ <form class="form" id="contact-form" data-to="{EMAIL}" data-ok="{E(T["ok"])}" data-err="{E(T["err"])}" data-lang="{lang}" novalidate>
+  <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="row"><label for="cf-name">{f[0]}</label><input id="cf-name" name="name" required autocomplete="name"></div>
   <div class="row"><label for="cf-company">{f[1]}</label><input id="cf-company" name="company" autocomplete="organization"></div>
   <div class="row"><label for="cf-email">{f[2]}</label><input id="cf-email" name="email" type="email" required autocomplete="email"></div>
   <div class="row"><label for="cf-msg">{f[3]}</label><textarea id="cf-msg" name="message" rows="6" required></textarea></div>
   <button class="btn" type="submit">{f[4]} {icon("arrow")}</button>
-  <p class="note">{E(T["note"])}</p>
+  <p class="note">{T["note"]}</p>
+  <p class="form-status" role="status" aria-live="polite"></p>
  </form>
  <aside class="side">
   <div class="card"><h3>Email</h3><a class="big-mail" href="mailto:{EMAIL}">{EMAIL}</a></div>
@@ -363,9 +367,23 @@ def article(key, lang):
  <p class="kicker"><a href="{url("insights",lang)}">← {UI[lang]["back"]}</a></p><h1>{E(t)}</h1><p class="lead">{E(ex)}</p><p class="meta">{ds} · {a["mins"]} {UI[lang]["min"]} · Vector Consulting</p>
 </div></section>
 <article class="sec"><div class="wrap narrow prose">{"".join(parts)}</div></article>'''
-    return t+" · Vector Consulting", ex, body, ld
+    SEO_TITLE = {("art-act","en"):"EU AI Act: a practical checklist for tech teams",
+                 ("art-act","es"):"Reglamento Europeo de IA: lista práctica para equipos",
+                 ("art-ds","es"):"Espacio de datos en producción: lecciones de salud"}
+    st = SEO_TITLE.get((key, lang), t)
+    return (st+" · Vector Consulting" if len(st) <= 45 else st), ex, body, ld
 
-PAGES = {"home":home,"services":services,"ai":ai,"how":how,"industries":industries,"cases":cases,"insights":insights,"about":about,"careers":careers,"contact":contact}
+import legal as LG
+def legal_page(key):
+    def fn(lang):
+        title, desc, paras = LG.LEGAL[key][lang]
+        parts = [f"<h2>{E(p[3:])}</h2>" if p.startswith("## ") else f"<p>{E(p)}</p>" for p in paras]
+        body = page_hero({"en":"Legal","es":"Legal"}[lang], E(title), desc, small=True) + \
+               f'<article class="sec"><div class="wrap narrow prose">{"".join(parts)}<p class="meta">{LG.UPDATED[lang]}</p></div></article>'
+        return f"{title} · Vector Consulting", desc, body
+    return fn
+
+PAGES = {"legal":legal_page("legal"),"privacy":legal_page("privacy"),"cookies":legal_page("cookies"),"home":home,"services":services,"ai":ai,"how":how,"industries":industries,"cases":cases,"insights":insights,"about":about,"careers":careers,"contact":contact}
 
 def write(path, content):
     fp=os.path.join(OUT, path.lstrip("/"), "index.html") if path.endswith("/") else os.path.join(OUT, path.lstrip("/"))
@@ -438,7 +456,10 @@ def main():
 - [Careers]({SITE}/about/careers/)
 - [Contact]({SITE}/contact/)
 - [Español]({SITE}/es/)
-"""
+- [Legal notice]({SITE}/legal/) · [Privacy]({SITE}/privacy/) · [Cookies]({SITE}/cookies/)
+
+## Videos (animated explainers, EN/ES, AI-generated voice-over)
+""" + "".join(f"- [{VIDS.VIDEOS[v]['en']['title']}]({SITE}/videos/{v}/): {vid_transcript(v,'en')}\n" for v in VIDS.ORDER)
     write("/llms.txt", llms)
     write("/CNAME","www.vectorconsultingltd.com\n")
     write("/.nojekyll","")

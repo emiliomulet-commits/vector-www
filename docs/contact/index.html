@@ -19,8 +19,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0b1526">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css">
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vector Consulting Limited", "url": "https://www.vectorconsultingltd.com/", "logo": "https://www.vectorconsultingltd.com/assets/logo.png", "email": "alison.lindsay@vectorconsultingltd.com", "image": "https://www.vectorconsultingltd.com/assets/og.png", "description": "Hong Kong technology consultancy: software engineering, dedicated teams, applied AI and federated data spaces for companies in Europe and Asia.", "address": {"@type": "PostalAddress", "streetAddress": "Rooms 1705-1709, 17/F, Tung Chiu Commercial Centre, 193 Lockhart Road", "addressLocality": "Wanchai", "addressRegion": "Hong Kong", "addressCountry": "HK"}, "areaServed": ["Europe", "Asia"], "knowsAbout": ["Software engineering", "Artificial intelligence", "Data spaces", "Gaia-X", "IDSA", "GDPR", "EU AI Act"]}</script>
 </head>
@@ -41,13 +41,15 @@
  <p class="kicker">Contact</p><h1>Tell us about <em>your project</em></h1><p class="lead">We will come back to you with a clear next step.</p>
 </div></section>
 <section class="sec"><div class="wrap contact-grid">
- <form class="form" id="contact-form" data-to="alison.lindsay@vectorconsultingltd.com">
+ <form class="form" id="contact-form" data-to="alison.lindsay@vectorconsultingltd.com" data-ok="Thank you. Your message has been sent; we will reply shortly." data-err="We could not send the form. Please write to us directly at" data-lang="en" novalidate>
+  <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="row"><label for="cf-name">Your name</label><input id="cf-name" name="name" required autocomplete="name"></div>
   <div class="row"><label for="cf-company">Company</label><input id="cf-company" name="company" autocomplete="organization"></div>
   <div class="row"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" required autocomplete="email"></div>
   <div class="row"><label for="cf-msg">What would you like to discuss?</label><textarea id="cf-msg" name="message" rows="6" required></textarea></div>
-  <button class="btn" type="submit">Prepare email <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-  <p class="note">This opens your email app with your message ready to send. Prefer to write directly? Use the address on the right.</p>
+  <button class="btn" type="submit">Send message <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  <p class="note">We use your data only to answer your enquiry. See our <a href="/privacy/">privacy policy</a>.</p>
+  <p class="form-status" role="status" aria-live="polite"></p>
  </form>
  <aside class="side">
   <div class="card"><h3>Email</h3><a class="big-mail" href="mailto:alison.lindsay@vectorconsultingltd.com">alison.lindsay@vectorconsultingltd.com</a></div>
@@ -67,7 +69,7 @@
   <div><h3>Company</h3><a href="/case-studies/">Case studies</a><a href="/insights/">Insights</a><a href="/about/">About</a><a href="/about/careers/">Careers</a></div>
   <div><h3>Contact</h3><a href="mailto:alison.lindsay@vectorconsultingltd.com">alison.lindsay@vectorconsultingltd.com</a><p class="addr"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0114 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Vector Consulting Limited<br>Rooms 1705-1709, 17/F, Tung Chiu Commercial Centre, 193 Lockhart Road, Wanchai, Hong Kong</span></p></div>
  </div>
- <div class="legal"><span>© 2026 Vector Consulting Limited · Business Registration No. 72876645 · All rights reserved.</span><span>Hong Kong · Madrid · London</span></div>
+ <div class="legal"><span>© 2026 Vector Consulting Limited · Business Registration No. 72876645 · All rights reserved.</span><span class="legal-links"><a href="/legal/">Legal notice</a> · <a href="/privacy/">Privacy</a> · <a href="/cookies/">Cookies</a></span></div>
 </div></footer>
 <script src="/assets/site.js" defer></script>
 </body></html>

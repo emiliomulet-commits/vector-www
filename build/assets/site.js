@@ -6,14 +6,34 @@
     btn.setAttribute("aria-expanded", open ? "true" : "false");
   });
 
+  // Contact form: sent through FormSubmit (AJAX). If the service fails, fall back to the visitor's email app.
   var form = document.getElementById("contact-form");
   if (form) form.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!form.reportValidity()) return;
-    var f = new FormData(form);
-    var subject = "Project enquiry — " + (f.get("company") || f.get("name"));
-    var body = f.get("message") + "\n\n" + f.get("name") + (f.get("company") ? " · " + f.get("company") : "") + "\n" + f.get("email");
-    window.location.href = "mailto:" + form.dataset.to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    var f = new FormData(form), st = form.querySelector(".form-status"), btn = form.querySelector("button[type=submit]");
+    if (f.get("_honey")) return;
+    var subject = "Web enquiry — " + (f.get("company") || f.get("name"));
+    var mail = function () {
+      var body = f.get("message") + "\n\n" + f.get("name") + (f.get("company") ? " · " + f.get("company") : "") + "\n" + f.get("email");
+      window.location.href = "mailto:" + form.dataset.to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    };
+    btn.disabled = true; st.className = "form-status"; st.textContent = "…";
+    fetch("https://formsubmit.co/ajax/" + form.dataset.to, {
+      method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      body: JSON.stringify({name: f.get("name"), company: f.get("company") || "-", email: f.get("email"), message: f.get("message"),
+        _subject: subject, _replyto: f.get("email"), _template: "table", _captcha: "false", _language: form.dataset.lang})
+    }).then(function (r) { return r.json().then(function (j) { return {ok: r.ok, j: j}; }); })
+      .then(function (res) {
+        if (!res.ok || String(res.j.success) !== "true") throw new Error(res.j.message || "failed");
+        form.reset(); st.className = "form-status ok"; st.textContent = form.dataset.ok;
+      })
+      .catch(function () {
+        st.className = "form-status err";
+        st.innerHTML = form.dataset.err + ' <a href="mailto:' + form.dataset.to + '">' + form.dataset.to + '</a>.';
+        mail();
+      })
+      .then(function () { btn.disabled = false; });
   });
 
   // Animated explainer videos in a lightbox (iframe); closes on Esc, backdrop or the player's close button.
@@ -39,6 +59,9 @@
   });
   window.addEventListener("message", function (e) { if (e.data && e.data.vector === "cerrar") closeVideo(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeVideo(); });
+  document.addEventListener("focusin", function (e) {   // keep keyboard focus inside the open video
+    if (box && !box.hidden && !box.contains(e.target)) box.querySelector("iframe").focus();
+  });
 
   // Vector field: short strokes aligned to a slowly drifting flow field.
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

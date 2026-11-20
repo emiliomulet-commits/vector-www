@@ -20,6 +20,9 @@ PATHS = {
     "art-ai":    ("/insights/ai-with-control-over-your-data/", "/es/perspectivas/ia-con-control-de-tus-datos/"),
     "art-ds":    ("/insights/running-a-data-space-in-production/", "/es/perspectivas/espacio-de-datos-en-produccion/"),
     "art-act":   ("/insights/preparing-for-the-eu-ai-act/", "/es/perspectivas/prepararse-para-el-reglamento-europeo-de-ia/"),
+    "legal":     ("/legal/", "/es/aviso-legal/"),
+    "privacy":   ("/privacy/", "/es/privacidad/"),
+    "cookies":   ("/cookies/", "/es/cookies/"),
 }
 
 UI = {
@@ -177,7 +180,7 @@ ARTICLES = {
          "## Measure, then scale",
          "A pilot earns the right to scale when it has a baseline, a target and an owner. With those three in place, extending to the next use case is a repeatable step rather than a new project."]),
   "es":("Cómo adoptar la IA sin perder el control de tus datos",
-        "La mayoría de los pilotos de IA se atascan por lo mismo: los datos que necesitan no pueden salir de casa. Un camino práctico hacia una IA útil que respeta ese límite.",
+        "Muchos pilotos de IA se atascan porque los datos que necesitan no pueden salir de casa. Un camino práctico hacia una IA útil que respeta ese límite.",
         ["A las empresas rara vez les faltan ideas para la IA. Lo que les falta es una forma segura de que un modelo trabaje con datos reales. Los expedientes de clientes, las historias clínicas, los contratos y los datos de producción son justo lo que hace útil a la IA, y justo lo que los equipos legales y de seguridad hacen bien en proteger.",
          "## Empezar por la decisión, no por el modelo",
          "Partimos de una decisión concreta que el negocio toma a menudo: clasificar documentos entrantes, priorizar incidencias, redactar una primera respuesta. Un caso de uso acotado limita los datos implicados, lo que acorta la revisión de privacidad y facilita medir el valor.",
